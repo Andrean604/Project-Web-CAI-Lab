@@ -40,7 +40,7 @@ export const dummyProducts = [
         },
         category: "Natural Language Processing",
         tags: ["LangChain", "OpenAI API", "Vector DB", "TailwindCSS"],
-        videoUrl: "https://www.youtube.com/embed/wnzbApqFAsE?si=UyYZx8mzYSongcjp",
+        videoUrl: "https://www.youtube.com/embed/yul8gQlC9HM?si=ji5STWeXAOnx6YsE",
         githubUrl: "https://github.com/example/eduscholar-llm",
         featured: true
     },
