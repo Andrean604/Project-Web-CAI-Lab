@@ -65,38 +65,74 @@ export default function CompetitionPreview() {
                         previewItems.map((item) => (
                             <div
                                 key={item.id}
-                                className="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-indigo-500/30 dark:hover:border-cyan-500/30 transition-all flex flex-col justify-between space-y-4"
+                                className="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800/80 rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:border-indigo-500/30 dark:hover:border-cyan-500/30 transition-all flex flex-col justify-between"
                             >
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between gap-2">
-                                        <span className="px-2.5 py-1 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/20 text-[11px] font-mono font-bold">
-                                            🏆 {item.achievement}
-                                        </span>
-                                        <span className="text-xs font-mono font-semibold text-slate-400">
-                                            {item.year}
-                                        </span>
-                                    </div>
-
-                                    <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug line-clamp-2">
-                                        {item.title}
-                                    </h3>
-
-                                    <p className="text-xs text-indigo-600 dark:text-cyan-400 font-medium">
-                                        📍 {item.organizer}
-                                    </p>
-
-                                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
-                                        {item.description}
-                                    </p>
+                                {/* Participant Thumbnail */}
+                                <div className="relative w-full h-40 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                                    {item.thumbnail ? (
+                                        <img
+                                            src={item.thumbnail}
+                                            alt={`${item.title} team photo`}
+                                            className="w-full h-full object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 text-slate-400 dark:text-slate-600">
+                                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={1.5}
+                                                    d="M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1a4 4 0 100-8 4 4 0 000 8zm6 3a4 4 0 00-3-3.87M9 12a4 4 0 100-8 4 4 0 000 8z"
+                                                />
+                                            </svg>
+                                            <span className="text-[10px] font-mono">No Photo</span>
+                                        </div>
+                                    )}
+                                    <span className="absolute top-3 right-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold shadow-lg shadow-amber-900/20 border border-amber-300/50 whitespace-nowrap">
+                                        <span className="text-sm leading-none">🏆</span>
+                                        <span>{item.achievement}</span>
+                                    </span>
                                 </div>
 
-                                <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400">
-                                    {item.teamMembers && (
-                                        <p className="truncate">
-                                            <strong className="text-slate-700 dark:text-slate-300">Team:</strong>{" "}
-                                            {item.teamMembers}
+                                <div className="p-6 space-y-4 flex flex-col justify-between flex-grow">
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between gap-2">
+                                            <span className="text-xs font-mono font-semibold text-slate-400">
+                                                {item.year}
+                                            </span>
+                                        </div>
+
+                                        <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug line-clamp-2">
+                                            {item.title}
+                                        </h3>
+
+                                        <p className="text-xs text-indigo-600 dark:text-cyan-400 font-medium">
+                                            📍 {item.organizer}
                                         </p>
-                                    )}
+
+                                        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-2">
+                                            {item.description}
+                                        </p>
+                                    </div>
+
+                                    <div className="pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400">
+                                        {item.teamMembers && (
+                                            <p className="truncate">
+                                                <strong className="text-slate-700 dark:text-slate-300">Team:</strong>{" "}
+                                                {item.teamMembers}
+                                            </p>
+                                        )}
+                                    </div>
+
+                                    <Link
+                                        href={`/competitions/${item.id}`}
+                                        className="w-full text-center py-2.5 px-4 rounded-xl bg-slate-900 dark:bg-indigo-600 hover:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-medium text-xs transition-colors flex items-center justify-center gap-1.5"
+                                    >
+                                        <span>View Details</span>
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </Link>
                                 </div>
                             </div>
                         ))
