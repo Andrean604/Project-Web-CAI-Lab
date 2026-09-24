@@ -1,217 +1,227 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 import { initialCompetitions } from "@/data/competitions";
-import AddCompetitionModal from "@/components/AddCompetitionModal";
+import VideoPlaceholder from "@/components/VideoPlaceholder";
 
-export default function CompetitionsPage() {
-    const [competitions, setCompetitions] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingItem, setEditingItem] = useState(null);
-    const [searchQuery, setSearchQuery] = useState("");
+export default function CompetitionDetailPage() {
+    const params = useParams();
+    const [status, setStatus] = useState("loading"); // loading | found | not-found
+    const [competition, setCompetition] = useState(null);
 
-    // Load data from localStorage
     useEffect(() => {
         const savedData = localStorage.getItem("lab_competitions_data");
+        let list = initialCompetitions;
         if (savedData) {
             try {
-                setCompetitions(JSON.parse(savedData));
+                list = JSON.parse(savedData);
             } catch (e) {
-                setCompetitions(initialCompetitions);
+                list = initialCompetitions;
             }
+        }
+        const found = list.find((c) => String(c.id) === String(params.id));
+        if (found) {
+            setCompetition(found);
+            setStatus("found");
         } else {
-            setCompetitions(initialCompetitions);
+            setStatus("not-found");
         }
-    }, []);
+    }, [params.id]);
 
-    // Open Modal in Add Mode
-    const handleOpenAddModal = () => {
-        setEditingItem(null);
-        setIsModalOpen(true);
-    };
+    if (status === "loading") {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white dark:bg-slate-950">
+                <p className="text-sm text-slate-400 font-mono">Loading...</p>
+            </div>
+        );
+    }
 
-    // Open Modal in Edit Mode
-    const handleOpenEditModal = (item) => {
-        setEditingItem(item);
-        setIsModalOpen(true);
-    };
+    if (status === "not-found") {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center gap-4 bg-white dark:bg-slate-950 px-4 text-center">
+                <p className="text-4xl font-extrabold text-slate-300 dark:text-slate-700">404</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">Competition record not found.</p>
+                <Link
+                    href="/competitions"
+                    className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-cyan-400 hover:text-indigo-700 dark:hover:text-cyan-300 transition-colors"
+                >
+                    Back to Competitions
+                </Link>
+            </div>
+        );
+    }
 
-    // Save Data (Handles both Add & Edit)
-    const handleSaveCompetition = (compData) => {
-        let updated;
-        if (editingItem) {
-            // Edit mode: replace old data with new data based on ID
-            updated = competitions.map((item) =>
-                item.id === compData.id ? compData : item
-            );
-        } else {
-            // Add mode: insert new data at the beginning of the array
-            updated = [compData, ...competitions];
-        }
+    // Prefer structured participants list; fall back to legacy comma-separated teamMembers string
+    const participants = competition.participants?.length
+        ? competition.participants
+        : (competition.teamMembers
+            ? competition.teamMembers.split(",").map((n) => ({ name: n.trim(), nim: "" })).filter((p) => p.name)
+            : []);
 
-        setCompetitions(updated);
-        localStorage.setItem("lab_competitions_data", JSON.stringify(updated));
-    };
-
-    // Delete Function
-    const handleDeleteCompetition = (id) => {
-        if (window.confirm("Are you sure you want to delete this competition record?")) {
-            const updated = competitions.filter((item) => item.id !== id);
-            setCompetitions(updated);
-            localStorage.setItem("lab_competitions_data", JSON.stringify(updated));
-        }
-    };
-
-    // Search filter
-    const filteredCompetitions = competitions.filter(
-        (item) =>
-            item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            item.achievement.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const story = competition.story || competition.description;
+    const videos = competition.videos?.length
+        ? competition.videos
+        : (competition.videoUrl ? [competition.videoUrl] : []);
 
     return (
-        <div className="bg-slate-50 dark:bg-slate-950 min-h-screen py-12 transition-colors duration-200">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-                {/* Header Section */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                    <div>
-                        <span className="text-xs font-mono font-bold text-indigo-600 dark:text-cyan-400 uppercase tracking-wider">
-                            ACHIEVEMENT SHOWCASE
-                        </span>
-                        <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                            Competition Showcase
-                        </h1>
-                        <p className="text-slate-600 dark:text-slate-400 text-sm mt-1">
-                            List of competition and hackathon achievements by laboratory members.
-                        </p>
-                    </div>
+        <div className="bg-white dark:bg-slate-950 min-h-screen transition-colors duration-200">
+            {/* HERO BAND */}
+            <section className="relative overflow-hidden bg-slate-50 dark:bg-slate-950 border-b border-slate-200/80 dark:border-slate-800/80">
+                <div
+                    className="absolute inset-0 -z-10 pointer-events-none dark:hidden"
+                    style={{
+                        background: "radial-gradient(circle at top, rgba(199, 210, 254, 0.6) 0%, rgba(248, 250, 252, 0) 65%)",
+                    }}
+                />
+                <div
+                    className="absolute inset-0 -z-10 pointer-events-none hidden dark:block"
+                    style={{
+                        background: "radial-gradient(circle at top, rgba(30, 41, 59, 1) 0%, rgba(2, 6, 23, 1) 65%)",
+                    }}
+                />
 
-                    <button
-                        onClick={handleOpenAddModal}
-                        className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm shadow-md shadow-indigo-500/20 transition-all self-start md:self-auto"
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-10 sm:pt-10 sm:pb-14 space-y-6">
+                    <Link
+                        href="/competitions"
+                        className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-indigo-600 dark:text-cyan-400 hover:text-indigo-700 dark:hover:text-cyan-300 transition-colors group"
                     >
-                        <span>+ Add Competition</span>
-                    </button>
+                        <svg className="w-4 h-4 transform group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span>Back to Competitions</span>
+                    </Link>
+
+                    <div className="space-y-4 max-w-3xl">
+                        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-600 dark:from-indigo-400 dark:via-blue-400 dark:to-cyan-400 bg-clip-text text-transparent pb-1">
+                            {competition.title}
+                        </h1>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded-md bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800/50">
+                                {competition.category}
+                            </span>
+                            <span className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-900/20 border border-amber-300/50 whitespace-nowrap">
+                                <span className="text-sm leading-none">🏆</span>
+                                <span>{competition.achievement}</span>
+                            </span>
+                            <span className="text-[11px] font-mono font-medium px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+                                {competition.year}
+                            </span>
+                        </div>
+                    </div>
                 </div>
+            </section>
 
-                {/* Filter / Search Bar */}
-                <div className="max-w-md">
-                    <input
-                        type="text"
-                        placeholder="Search competitions, achievements, or categories..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-100 placeholder-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm"
-                    />
-                </div>
-
-                {/* Competitions Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredCompetitions.length > 0 ? (
-                        filteredCompetitions.map((item) => (
-                            <div
-                                key={item.id}
-                                className="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative group"
-                            >
-                                <div className="space-y-3">
-                                    <div className="flex items-center justify-between gap-2">
-                                        <span className="px-2.5 py-1 rounded-md bg-amber-50 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800/50 text-[11px] font-mono font-bold">
-                                            🏆 {item.achievement}
-                                        </span>
-                                        <div className="flex items-center gap-1">
-                                            <span className="text-xs font-mono font-semibold text-slate-400 mr-1">
-                                                {item.year}
-                                            </span>
-
-                                            {/* Edit Button (Pencil) */}
-                                            <button
-                                                onClick={() => handleOpenEditModal(item)}
-                                                className="text-slate-400 hover:text-indigo-600 dark:hover:text-cyan-400 p-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-colors"
-                                                title="Edit Competition"
-                                            >
-                                                <svg
-                                                    className="w-4 h-4"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
-                                                    />
-                                                </svg>
-                                            </button>
-
-                                            {/* Delete Button (Trash) */}
-                                            <button
-                                                onClick={() => handleDeleteCompetition(item.id)}
-                                                className="text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 p-1.5 rounded-lg hover:bg-rose-50 dark:hover:bg-rose-950/50 transition-colors"
-                                                title="Delete Competition"
-                                            >
-                                                <svg
-                                                    className="w-4 h-4"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        strokeWidth={2}
-                                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <h3 className="text-base font-bold text-slate-900 dark:text-white leading-snug">
-                                        {item.title}
-                                    </h3>
-
-                                    <p className="text-xs text-indigo-600 dark:text-cyan-400 font-medium">
-                                        📍 {item.organizer}
-                                    </p>
-
-                                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed line-clamp-3">
-                                        {item.description}
-                                    </p>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+                {/* Videos */}
+                {videos.length > 0 ? (
+                    <div className={`grid grid-cols-1 ${videos.length > 1 ? "md:grid-cols-2" : ""} gap-6 mb-12`}>
+                        {videos.map((url, idx) => (
+                            <div key={idx} className="space-y-2">
+                                <div className="rounded-2xl overflow-hidden shadow-lg shadow-slate-900/5 dark:shadow-black/30">
+                                    <VideoPlaceholder videoUrl={url} title={`${competition.title} - Video ${idx + 1}`} />
                                 </div>
+                                {videos.length > 1 && (
+                                    <p className="text-xs font-mono font-medium text-slate-400 dark:text-slate-500 pl-1">
+                                        Video {idx + 1} of {videos.length}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="rounded-2xl overflow-hidden shadow-lg shadow-slate-900/5 dark:shadow-black/30 mb-12">
+                        <VideoPlaceholder videoUrl={null} title={competition.title} />
+                    </div>
+                )}
 
-                                <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 space-y-1.5 text-xs text-slate-500 dark:text-slate-400">
-                                    {item.teamMembers && (
-                                        <p className="truncate">
-                                            <strong className="text-slate-700 dark:text-slate-300">Team:</strong>{" "}
-                                            {item.teamMembers}
-                                        </p>
-                                    )}
-                                    {item.lecturer && (
-                                        <p className="truncate">
-                                            <strong className="text-slate-700 dark:text-slate-300">Advisor:</strong>{" "}
-                                            {item.lecturer}
-                                        </p>
-                                    )}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+                    {/* Main content */}
+                    <div className="lg:col-span-2 space-y-10">
+                        <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                                <span className="w-1.5 h-6 rounded-full bg-indigo-600 dark:bg-cyan-400" />
+                                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
+                                    Experience Story
+                                </h2>
+                            </div>
+                            <p className="text-sm sm:text-[15px] text-slate-600 dark:text-slate-400 leading-relaxed whitespace-pre-line">
+                                {story}
+                            </p>
+                        </div>
+
+                        {participants.length > 0 && (
+                            <div className="space-y-4">
+                                <div className="flex items-center gap-2">
+                                    <span className="w-1.5 h-6 rounded-full bg-indigo-600 dark:bg-cyan-400" />
+                                    <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
+                                        Participants
+                                    </h2>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    {participants.map((p, idx) => (
+                                        <div
+                                            key={idx}
+                                            className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-800/80"
+                                        >
+                                            <span className="flex-shrink-0 w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950 flex items-center justify-center text-indigo-600 dark:text-indigo-300 font-bold text-sm">
+                                                {p.name?.charAt(0)?.toUpperCase() || "?"}
+                                            </span>
+                                            <div className="space-y-0.5 min-w-0">
+                                                <p className="text-sm font-semibold text-slate-800 dark:text-slate-200 truncate">
+                                                    {p.name}
+                                                </p>
+                                                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+                                                    NIM: {p.nim || "-"}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
-                        ))
-                    ) : (
-                        <div className="col-span-full text-center py-12 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
-                            <p className="text-slate-500 text-sm">No competitions found.</p>
+                        )}
+                    </div>
+
+                    {/* Sidebar */}
+                    <div className="lg:sticky lg:top-24 lg:self-start space-y-6">
+                        <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 shadow-sm space-y-4">
+                            <h3 className="text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                Competition Info
+                            </h3>
+
+                            <div className="space-y-3 text-sm">
+                                <div>
+                                    <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+                                        Organizer
+                                    </span>
+                                    <p className="text-slate-800 dark:text-slate-200 font-medium">{competition.organizer}</p>
+                                </div>
+                                <div>
+                                    <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+                                        Achievement
+                                    </span>
+                                    <p className="text-slate-800 dark:text-slate-200 font-medium">{competition.achievement}</p>
+                                </div>
+                                {competition.lecturer && (
+                                    <div>
+                                        <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+                                            Advisor / Lecturer
+                                        </span>
+                                        <p className="text-slate-800 dark:text-slate-200 font-medium">{competition.lecturer}</p>
+                                    </div>
+                                )}
+                                <div>
+                                    <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+                                        Year
+                                    </span>
+                                    <p className="text-slate-800 dark:text-slate-200 font-medium">{competition.year}</p>
+                                </div>
+                            </div>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
-
-            {/* Popup Modal (Handles Add & Edit) */}
-            <AddCompetitionModal 
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                onSubmit={handleSaveCompetition}
-                initialData={editingItem}
-            />
-        
         </div>
     );
 }
