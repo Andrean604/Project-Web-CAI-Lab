@@ -19,4 +19,11 @@ export const initialCompetitions = [
         teamMembers: "Siti Rahma, Andrean Tjandra",
         advisor: "Prof. Handoko, Ph.D.",
     },
+      {
+        id: 1,
+        title: "National AI Hackathon 2026",
+        achievement: "1st Place Winner",
+        thumbnail: "https://example.com/foto-tim.jpg",
+        // ...field lainnya
+    }
 ];
