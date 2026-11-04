@@ -1,0 +1,71 @@
+datasource db {
+  provider = "sqlite" // Change to "postgresql" for production DB
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  GUEST
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      Role      @default(MEMBER)
+  avatar    String?
+  bio       String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model LabMember {
+  id          String   @id @default(uuid())
+  name        String
+  roleTitle   String   
+  email       String   @unique
+  avatarUrl   String?
+  researchArea String?
+  githubUrl   String?
+  googleScholar String?
+  createdAt   DateTime @default(now())
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String
+  category    String  
+  imageUrl    String?
+  githubUrl   String?
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Publication {
+  id        String   @id @default(uuid())
+  title     String
+  authors   String   
+  venue     String  
+  year      Int
+  paperUrl  String?
+  pdfUrl    String?
+  createdAt DateTime @default(now())
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  title     String   
+  startTime DateTime
+  endTime   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
