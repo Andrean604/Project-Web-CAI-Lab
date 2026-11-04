@@ -1,22 +1,31 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import ThemeToggle from "@/components/ThemeToggle";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Navbar() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
+    const { role, ready, logout } = useAuth();
 
     const navLinks = [
         { href: "/", label: "Home", exact: true },
         { href: "/products", label: "Products", exact: false },
         { href: "/about", label: "About", exact: true },
-        { href: "/competitions", label: "Competitions", exact: true },
+        { href: "/competitions", label: "Competitions", exact: false },
     ];
 
     const isActive = (href, exact) => {
         return exact ? pathname === href : pathname.startsWith(href);
+    };
+
+    const handleLogout = () => {
+        logout();
+        setIsMobileMenuOpen(false);
+        router.push("/");
     };
 
     return (
@@ -33,38 +42,70 @@ export default function Navbar() {
                 </Link>
 
                 {/* Navigation (Desktop) */}
-                <nav className="hidden md:flex items-center gap-6 font-medium text-xs sm:text-sm">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={
-                                isActive(link.href, link.exact)
-                                    ? "text-indigo-600 dark:text-cyan-400 font-semibold"
-                                    : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-cyan-400 transition-colors"
-                            }
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-                </nav>
+                {role && (
+                    <nav className="hidden md:flex items-center gap-6 font-medium text-xs sm:text-sm">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={
+                                    isActive(link.href, link.exact)
+                                        ? "text-indigo-600 dark:text-cyan-400 font-semibold"
+                                        : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-cyan-400 transition-colors"
+                                }
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
+                )}
 
                 {/* Theme Toggle & Actions */}
                 <div className="flex items-center gap-2 sm:gap-3">
                     <ThemeToggle />
 
-                    <Link
-                        href="/products"
-                        className="hidden sm:inline-block px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition-all"
-                    >
-                        Explore Catalog
-                    </Link>
+                    {ready && role ? (
+                        <div className="hidden sm:flex items-center gap-2">
+                            <span
+                                className={`px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider border ${role === "admin"
+                                        ? "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/50"
+                                        : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700"
+                                    }`}
+                            >
+                                {role}
+                            </span>
+                            <button
+                                onClick={handleLogout}
+                                className="px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            >
+                                Logout
+                            </button>
+                        </div>
+                    ) : (
+                        ready && pathname !== "/login" && (
+                            <Link
+                                href="/login"
+                                className="hidden sm:inline-block px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            >
+                                Login
+                            </Link>
+                        )
+                    )}
+
+                    {role && (
+                        <Link
+                            href="/products"
+                            className="hidden sm:inline-block px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm transition-all"
+                        >
+                            Explore Catalog
+                        </Link>
+                    )}
 
                     {/* Mobile Hamburger Button */}
                     <button
                         onClick={() => setIsMobileMenuOpen((prev) => !prev)}
                         type="button"
-                        className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                        className={`${role ? "md:hidden" : "hidden"} p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors`}
                         aria-label="Toggle mobile menu"
                     >
                         {isMobileMenuOpen ? (
@@ -81,7 +122,7 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Dropdown Menu */}
-            {isMobileMenuOpen && (
+            {role && isMobileMenuOpen && (
                 <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md px-4 pt-2 pb-4 space-y-1.5 transition-all">
                     {navLinks.map((link) => (
                         <Link
@@ -97,7 +138,25 @@ export default function Navbar() {
                         </Link>
                     ))}
 
-                    <div className="pt-2 sm:hidden">
+                    <div className="pt-2 space-y-2 sm:hidden">
+                        {ready && role ? (
+                            <button
+                                onClick={handleLogout}
+                                className="block w-full text-center px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            >
+                                Logout ({role})
+                            </button>
+                        ) : (
+                            ready && pathname !== "/login" && (
+                                <Link
+                                    href="/login"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="block w-full text-center px-4 py-2 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                                >
+                                    Login
+                                </Link>
+                            )
+                        )}
                         <Link
                             href="/products"
                             onClick={() => setIsMobileMenuOpen(false)}
