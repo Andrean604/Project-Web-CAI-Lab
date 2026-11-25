@@ -1,0 +1,164 @@
+{
+  "app/about/page.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.0517068,
+    "ast_hash": "ee157ad42cad2b6280552785382a0047",
+    "semantic_hash": "ee157ad42cad2b6280552785382a0047"
+  },
+  "app/competitions/[id]/page.js": {
+    "mtime": 1794386285.2593486,
+    "seen": 1794972642.051711,
+    "ast_hash": "bf444dc4c9912b475114684cfa014e2a",
+    "semantic_hash": "bf444dc4c9912b475114684cfa014e2a"
+  },
+  "app/competitions/page.js": {
+    "mtime": 1794386266.9644892,
+    "seen": 1794972642.051713,
+    "ast_hash": "07e29c371ad006adc8a596a0e5e99ece",
+    "semantic_hash": "07e29c371ad006adc8a596a0e5e99ece"
+  },
+  "app/layout.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051714,
+    "ast_hash": "6969752b0591ffbd8d83a0b9fac6f530",
+    "semantic_hash": "6969752b0591ffbd8d83a0b9fac6f530"
+  },
+  "app/login/page.js": {
+    "mtime": 1794386249.3834407,
+    "seen": 1794972642.0517151,
+    "ast_hash": "2811d89782ef6a3e5135433d7e004ea4",
+    "semantic_hash": "2811d89782ef6a3e5135433d7e004ea4"
+  },
+  "app/page.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051716,
+    "ast_hash": "59791cb1ccefbca655a838cfe6e24f93",
+    "semantic_hash": "59791cb1ccefbca655a838cfe6e24f93"
+  },
+  "app/products/[id]/page.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051717,
+    "ast_hash": "a27d8ac96f5916a17c25879f7c242f6c",
+    "semantic_hash": "a27d8ac96f5916a17c25879f7c242f6c"
+  },
+  "app/products/page.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051718,
+    "ast_hash": "37a83b6011493b3bdf85f3b44f245a62",
+    "semantic_hash": "37a83b6011493b3bdf85f3b44f245a62"
+  },
+  "components/AboutSection.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051718,
+    "ast_hash": "e51c5ecf04b6b522e7de6cc65f5a3d2a",
+    "semantic_hash": "e51c5ecf04b6b522e7de6cc65f5a3d2a"
+  },
+  "components/AddCompetitionModal.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051719,
+    "ast_hash": "4f45f0e1bda7bce19e1fa6440cef7846",
+    "semantic_hash": "4f45f0e1bda7bce19e1fa6440cef7846"
+  },
+  "components/AuthProvider.js": {
+    "mtime": 1794386225.5410678,
+    "seen": 1794972642.0517209,
+    "ast_hash": "e209584041974ecd07262435bd6c8bf8",
+    "semantic_hash": "e209584041974ecd07262435bd6c8bf8"
+  },
+  "components/CompetitionPreview.js": {
+    "mtime": 1794386302.7986035,
+    "seen": 1794972642.051722,
+    "ast_hash": "cbb438a62ba14892f41c2aef7a0536a3",
+    "semantic_hash": "cbb438a62ba14892f41c2aef7a0536a3"
+  },
+  "components/Footer.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051724,
+    "ast_hash": "9df9e78ac2487707fbcbcdd7ebcff1b6",
+    "semantic_hash": "9df9e78ac2487707fbcbcdd7ebcff1b6"
+  },
+  "components/Hero.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.0517251,
+    "ast_hash": "a52df681545232b6fc3a1112d9605f45",
+    "semantic_hash": "a52df681545232b6fc3a1112d9605f45"
+  },
+  "components/Navbar.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051726,
+    "ast_hash": "86ecdf31b0cd74e8ec21c47f301fc9b3",
+    "semantic_hash": "86ecdf31b0cd74e8ec21c47f301fc9b3"
+  },
+  "components/ProductCard.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051727,
+    "ast_hash": "cfaaaa12d45ecf4ceb123c642dfca882",
+    "semantic_hash": "cfaaaa12d45ecf4ceb123c642dfca882"
+  },
+  "components/ThemeToggle.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051727,
+    "ast_hash": "f80af7b0cd9097cef3284705b7b302cb",
+    "semantic_hash": "f80af7b0cd9097cef3284705b7b302cb"
+  },
+  "components/VideoPlaceholder.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.0517278,
+    "ast_hash": "5ea7c40c1c724f11a39a30f8a42ac5de",
+    "semantic_hash": "5ea7c40c1c724f11a39a30f8a42ac5de"
+  },
+  "components/providers.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051729,
+    "ast_hash": "3c87eccd5a2b4644d1f07bcc7531fbdc",
+    "semantic_hash": "3c87eccd5a2b4644d1f07bcc7531fbdc"
+  },
+  "data/competitions.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.05173,
+    "ast_hash": "53dcfc2bd77d913d08f0b33b1da50d22",
+    "semantic_hash": "53dcfc2bd77d913d08f0b33b1da50d22"
+  },
+  "data/dummyProducts.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.0517309,
+    "ast_hash": "51aa1f310f5ec9af21907f1270cce9f9",
+    "semantic_hash": "51aa1f310f5ec9af21907f1270cce9f9"
+  },
+  "jsconfig.json": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.0517309,
+    "ast_hash": "21306b44064ae42bbbd715b1986abaf8",
+    "semantic_hash": "21306b44064ae42bbbd715b1986abaf8"
+  },
+  "lib/api.js": {
+    "mtime": 1794386184.0592003,
+    "seen": 1794972642.051732,
+    "ast_hash": "a3a36ff1ba4b458582fa1d8d409bb13c",
+    "semantic_hash": "a3a36ff1ba4b458582fa1d8d409bb13c"
+  },
+  "next.config.mjs": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051733,
+    "ast_hash": "9b2513e16440eb1cf02bc3ff4b3d8a34",
+    "semantic_hash": "9b2513e16440eb1cf02bc3ff4b3d8a34"
+  },
+  "package.json": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051734,
+    "ast_hash": "46c19a5af553ad03f894cb52ea14d340",
+    "semantic_hash": "46c19a5af553ad03f894cb52ea14d340"
+  },
+  "postcss.config.mjs": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051735,
+    "ast_hash": "239f3ebf717465dc636818a1a619398d",
+    "semantic_hash": "239f3ebf717465dc636818a1a619398d"
+  },
+  "tailwind.config.js": {
+    "mtime": 1793762089.0,
+    "seen": 1794972642.051736,
+    "ast_hash": "83affa0021738f8ffb0081ccb4e0294a",
+    "semantic_hash": "83affa0021738f8ffb0081ccb4e0294a"
+  }
+}
