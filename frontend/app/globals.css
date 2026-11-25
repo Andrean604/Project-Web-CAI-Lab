@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Font sistem: tanpa unduhan font, mengikuti SF Pro di Apple, Segoe UI di Windows */
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* ===== Token CAI Lab (mode gelap lewat class .dark dari next-themes) ===== */
+:root {
+  color-scheme: light;
+  --ds-bg: #f8fafc;
+  /* Paper */
+  --ds-surface: #ffffff;
+  --ds-surface-muted: #f1f5f9;
+  --ds-border: #e2e8f0;
+  /* Rule */
+  --ds-text: #0f172a;
+  /* Ink */
+  --ds-text-muted: #475569;
+  --ds-primary: #4f46e5;
+  /* Signal: tombol utama dan fokus */
+  --ds-accent: #0e7490;
+  /* Trace: tautan dan nilai data */
+  --ds-award: #f59e0b;
+  /* Award: khusus hasil lomba */
+  --ds-on-award: #0f172a;
+  --ds-radius-media: 16px;
+  --ds-radius-card: 12px;
+  --ds-radius-control: 10px;
+  --ds-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dark {
+  color-scheme: dark;
+  --ds-bg: #020617;
+  --ds-surface: #0f172a;
+  --ds-surface-muted: #1e293b;
+  --ds-border: #1e293b;
+  --ds-text: #f8fafc;
+  --ds-text-muted: #94a3b8;
+  --ds-primary: #6366f1;
+  --ds-accent: #22d3ee;
+}
+
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(99, 102, 241, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Dasar halaman. Di dalam layer base supaya kelas Tailwind tetap bisa menimpa. */
+@layer base {
+  body {
+    background: var(--ds-bg);
+    color: var(--ds-text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Header sticky 64px tidak boleh menutupi elemen yang sedang difokus */
+  html {
+    scroll-padding-top: 5rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Cegah zoom ganda saat ketuk dua kali pada kontrol */
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+
+  /* Cincin fokus keyboard */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--ds-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto !important;
+    }
+
+    /* Semua transisi (termasuk utilitas Tailwind) hampir instan */
+    *,
+    ::before,
+    ::after {
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+  }
+}
+
+/* Gerak */
+@keyframes ds-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ds-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ds-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Kelas komponen. Di dalam layer components supaya utilitas Tailwind bisa menimpa. */
+@layer components {
+  .ds-card {
+    background: var(--ds-surface);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-card);
+  }
+
+  /* Umpan balik saat ditekan: instan */
+  .ds-press {
+    transition: transform 100ms ease-out;
+  }
+
+  .ds-press:active {
+    transform: scale(0.97);
+  }
+
+  /* Kartu berupa tautan: gambar membesar sedikit, judul bergaris bawah */
+  .ds-link-card .ds-zoom {
+    transition: transform 300ms var(--ds-ease);
+  }
+
+  .ds-link-card:hover .ds-zoom {
+    transform: scale(1.04);
+  }
+
+  .ds-link-card:hover .ds-link-title {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ds-heading {
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  .ds-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ds-text);
+    text-wrap: balance;
+  }
+
+  .ds-prose {
+    max-width: 65ch;
+  }
+
+  /* Monospace hanya untuk nilai data: NIM, tahun, versi */
+  .ds-data {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Lembar catatan / spesifikasi: tabel bergaris dari <dl> */
+  .ds-sheet {
+    border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-card);
+    overflow: hidden;
+    background: var(--ds-surface);
+  }
+
+  .ds-sheet-row {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--ds-border);
+  }
+
+  .ds-sheet-row:first-child {
+    border-top: 0;
+  }
+
+  .ds-sheet dt {
+    font-size: 0.875rem;
+    color: var(--ds-text-muted);
+  }
+
+  .ds-sheet dd {
+    overflow-wrap: anywhere;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--ds-text);
+  }
+
+  /* Material translusen (navbar) */
+  .ds-glass {
+    background: color-mix(in srgb, var(--ds-surface) 72%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+  }
+
+  .ds-enter {
+    animation: ds-up 320ms var(--ds-ease) both;
+  }
+
+  .ds-backdrop {
+    animation: ds-fade 200ms ease-out both;
+  }
+
+  .ds-pop {
+    animation: ds-pop 220ms var(--ds-ease) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .ds-enter,
+    .ds-pop {
+      animation: ds-fade 150ms linear both;
+    }
+
+    .ds-press:active {
+      transform: none;
+    }
+
+    .ds-link-card:hover .ds-zoom {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .ds-glass {
+      background: var(--ds-surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+}
