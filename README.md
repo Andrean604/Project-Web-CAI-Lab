@@ -17,3 +17,5 @@ run the development server:
 ```bash
 npm run dev
 ```
+pastiin file .env ada di dalam folder backend
+
