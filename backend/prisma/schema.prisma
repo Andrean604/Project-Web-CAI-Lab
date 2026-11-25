@@ -1,0 +1,120 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  role      String     @default("GUEST")
+  avatar    String?
+  bio       String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model LabMember {
+  id          String   @id @default(uuid())
+  name        String
+  roleTitle   String   
+  email       String   @unique
+  avatarUrl   String?
+  researchArea String?
+  githubUrl   String?
+  googleScholar String?
+  createdAt   DateTime @default(now())
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  description String
+  category    String  
+  imageUrl    String?
+  githubUrl   String?
+  isFeatured  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Publication {
+  id        String   @id @default(uuid())
+  title     String
+  authors   String   
+  venue     String  
+  year      Int
+  paperUrl  String?
+  pdfUrl    String?
+  createdAt DateTime @default(now())
+}
+
+model Booking {
+  id        String   @id @default(uuid())
+  title     String   
+  startTime DateTime
+  endTime   DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Competition {
+  id           String   @id @default(uuid())
+  title        String
+  organizer    String
+  achievement  String
+  category     String
+  year         Int
+  lecturer     String?
+  description  String?
+  story        String?
+  thumbnail    String?
+  createdAt    DateTime @default(now())
+  participants CompetitionParticipant[]
+  videos       CompetitionVideo[]
+  level          String?
+  eventDate      DateTime?
+  location       String?
+  certificateUrl String?
+  photos         CompetitionPhoto[]
+}
+
+model CompetitionPhoto {
+  id            String      @id @default(uuid())
+  url           String
+  createdAt     DateTime    @default(now())
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+}
+
+model CompetitionParticipant {
+  id            String      @id @default(uuid())
+  name          String
+  nim           String?
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+}
+
+model CompetitionVideo {
+  id            String      @id @default(uuid())
+  url           String
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+}
+
+model LabPhoto {
+  id        String   @id @default(uuid())
+  url       String
+  caption   String?
+  createdAt DateTime @default(now())
+}
