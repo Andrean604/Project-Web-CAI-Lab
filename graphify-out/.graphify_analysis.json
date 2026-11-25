@@ -1,0 +1,265 @@
+{
+  "communities": {
+    "0": [
+      "package",
+      "package_dependencies",
+      "package_dependencies_next",
+      "package_dependencies_next_themes",
+      "package_dependencies_react",
+      "package_dependencies_react_dom",
+      "package_devdependencies",
+      "package_devdependencies_tailwindcss",
+      "package_devdependencies_tailwindcss_postcss",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_dev",
+      "package_scripts_start",
+      "package_version",
+      "ref_next_themes",
+      "ref_react_dom",
+      "ref_tailwindcss",
+      "ref_tailwindcss_postcss"
+    ],
+    "1": [
+      "app_about_page",
+      "app_about_page_aboutpage",
+      "app_page",
+      "app_page_home",
+      "app_products_page",
+      "app_products_page_productspage",
+      "components_aboutsection",
+      "components_aboutsection_aboutsection",
+      "components_competitionpreview",
+      "components_competitionpreview_competitionpreview",
+      "components_hero",
+      "components_hero_hero",
+      "components_productcard",
+      "components_productcard_productcard",
+      "data_dummyproducts",
+      "data_dummyproducts_dummyproducts",
+      "ref_next"
+    ],
+    "2": [
+      "app_globals",
+      "app_layout",
+      "app_layout_metadata",
+      "app_layout_rootlayout",
+      "components_authprovider_authgate",
+      "components_authprovider_authprovider",
+      "components_footer",
+      "components_footer_footer",
+      "components_navbar_navbar",
+      "components_providers",
+      "components_providers_providers"
+    ],
+    "3": [
+      "components_authprovider",
+      "components_authprovider_authcontext",
+      "lib_api",
+      "lib_api_api_url",
+      "lib_api_apierror",
+      "lib_api_apierror_constructor",
+      "lib_api_apifetch",
+      "lib_api_gettoken",
+      "lib_api_token_key"
+    ],
+    "4": [
+      "app_competitions_id_page",
+      "app_competitions_id_page_competitiondetailpage",
+      "app_products_id_page",
+      "app_products_id_page_generatemetadata",
+      "app_products_id_page_generatestaticparams",
+      "app_products_id_page_productdetailpage",
+      "components_videoplaceholder",
+      "components_videoplaceholder_videoplaceholder"
+    ],
+    "5": [
+      "app_competitions_page",
+      "app_competitions_page_competitionspage",
+      "components_addcompetitionmodal",
+      "components_addcompetitionmodal_addcompetitionmodal",
+      "components_addcompetitionmodal_deriveparticipants",
+      "components_addcompetitionmodal_derivevideos",
+      "components_addcompetitionmodal_emptyformstate",
+      "components_addcompetitionmodal_emptyparticipant"
+    ],
+    "6": [
+      "app_login_page",
+      "app_login_page_loginpage",
+      "components_authprovider_useauth",
+      "components_navbar",
+      "components_themetoggle",
+      "components_themetoggle_themetoggle",
+      "ref_react"
+    ],
+    "7": [
+      "jsconfig",
+      "jsconfig_compileroptions",
+      "jsconfig_compileroptions_paths"
+    ],
+    "8": [
+      "next",
+      "next_config",
+      "next_config_nextconfig"
+    ],
+    "9": [
+      "data_competitions",
+      "data_competitions_initialcompetitions"
+    ],
+    "10": [
+      "postcss_config",
+      "postcss_config_config"
+    ],
+    "11": [
+      "tailwind_config",
+      "tailwindcss"
+    ]
+  },
+  "cohesion": {
+    "0": 0.12105263157894737,
+    "1": 0.23529411764705882,
+    "2": 0.3090909090909091,
+    "3": 0.3333333333333333,
+    "4": 0.39285714285714285,
+    "5": 0.5357142857142857,
+    "6": 0.47619047619047616,
+    "7": 0.6666666666666666,
+    "8": 0.6666666666666666,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0
+  },
+  "gods": [
+    {
+      "id": "ref_next",
+      "label": "next",
+      "degree": 13
+    },
+    {
+      "id": "lib_api_apifetch",
+      "label": "apiFetch()",
+      "degree": 11
+    },
+    {
+      "id": "ref_react",
+      "label": "react",
+      "degree": 11
+    },
+    {
+      "id": "components_authprovider_useauth",
+      "label": "useAuth()",
+      "degree": 8
+    },
+    {
+      "id": "components_addcompetitionmodal_addcompetitionmodal",
+      "label": "AddCompetitionModal()",
+      "degree": 7
+    },
+    {
+      "id": "app_page_home",
+      "label": "Home()",
+      "degree": 5
+    },
+    {
+      "id": "components_productcard_productcard",
+      "label": "ProductCard()",
+      "degree": 5
+    },
+    {
+      "id": "components_navbar_navbar",
+      "label": "Navbar()",
+      "degree": 5
+    },
+    {
+      "id": "components_providers_providers",
+      "label": "Providers()",
+      "degree": 5
+    },
+    {
+      "id": "components_videoplaceholder_videoplaceholder",
+      "label": "VideoPlaceholder()",
+      "degree": 5
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ProductsPage()",
+      "target": "ProductCard()",
+      "source_files": [
+        "app/products/page.js",
+        "components/ProductCard.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `ProductsPage()` unexpectedly reaches hub `ProductCard()`"
+    },
+    {
+      "source": "CompetitionPreview()",
+      "target": "apiFetch()",
+      "source_files": [
+        "components/CompetitionPreview.js",
+        "lib/api.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "AuthProvider()",
+      "target": "apiFetch()",
+      "source_files": [
+        "components/AuthProvider.js",
+        "lib/api.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "CompetitionDetailPage()",
+      "target": "apiFetch()",
+      "source_files": [
+        "app/competitions/[id]/page.js",
+        "lib/api.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "CompetitionsPage()",
+      "target": "apiFetch()",
+      "source_files": [
+        "app/competitions/page.js",
+        "lib/api.js"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `next` connect `next` to `package.json`, `AuthProvider.js`, `products/[id]/page.js`, `competitions/page.js`, `react`?",
+      "why": "High betweenness centrality (0.274) - this node is a cross-community bridge."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `package.json` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.12105263157894737 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `react` connect `react` to `package.json`, `next`, `AuthProvider.js`, `products/[id]/page.js`, `competitions/page.js`?",
+      "why": "High betweenness centrality (0.176) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `apiFetch()` connect `AuthProvider.js` to `next`, `layout.js`, `products/[id]/page.js`, `competitions/page.js`?",
+      "why": "High betweenness centrality (0.059) - this node is a cross-community bridge."
+    }
+  ]
+}
