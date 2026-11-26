@@ -29,7 +29,7 @@ export default function Navbar() {
     };
 
     const outlineButton =
-        "ds-press inline-flex items-center justify-center min-h-[44px] px-4 text-xs font-semibold rounded-xl border border-[var(--ds-border)] text-[var(--ds-text)] hover:bg-[var(--ds-surface-muted)] transition-colors";
+        "ds-press items-center justify-center min-h-[44px] px-4 text-xs font-semibold rounded-xl border border-[var(--ds-border)] text-[var(--ds-text)] hover:bg-[var(--ds-surface-muted)] transition-colors";
 
     return (
         <header className="ds-glass sticky top-0 z-50 border-b border-[var(--ds-border)] transition-colors">
@@ -54,10 +54,11 @@ export default function Navbar() {
                                     key={link.href}
                                     href={link.href}
                                     aria-current={active ? "page" : undefined}
-                                    className={`relative h-16 px-3 inline-flex items-center rounded-lg focus-visible:-outline-offset-4 transition-colors ${active
-                                        ? "text-[var(--ds-accent)] font-semibold"
-                                        : "text-[var(--ds-text-muted)] hover:text-[var(--ds-text)]"
-                                        }`}
+                                    className={`relative h-16 px-3 inline-flex items-center rounded-lg focus-visible:-outline-offset-4 transition-colors ${
+                                        active
+                                            ? "text-[var(--ds-accent)] font-semibold"
+                                            : "text-[var(--ds-text-muted)] hover:text-[var(--ds-text)]"
+                                    }`}
                                 >
                                     {link.label}
                                     {active && (
@@ -76,10 +77,11 @@ export default function Navbar() {
                     {ready && role ? (
                         <div className="hidden sm:flex items-center gap-2">
                             <span
-                                className={`px-2.5 py-1 rounded-lg text-xs font-medium capitalize border ${role === "admin"
-                                    ? "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/50"
-                                    : "bg-[var(--ds-surface-muted)] text-[var(--ds-text-muted)] border-[var(--ds-border)]"
-                                    }`}
+                                className={`px-2.5 py-1 rounded-lg text-xs font-medium capitalize border ${
+                                    role === "admin"
+                                        ? "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border-amber-200/80 dark:border-amber-800/50"
+                                        : "bg-[var(--ds-surface-muted)] text-[var(--ds-text-muted)] border-[var(--ds-border)]"
+                                }`}
                             >
                                 {role}
                             </span>
@@ -111,7 +113,7 @@ export default function Navbar() {
                         type="button"
                         aria-expanded={isMobileMenuOpen}
                         aria-controls="mobile-menu"
-                        className={`${role ? "md:hidden" : "hidden"} ds-press w-11 h-11 inline-flex items-center justify-center rounded-xl text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface-muted)] transition-colors`}
+                        className={`${role ? "md:hidden inline-flex" : "hidden"} ds-press w-11 h-11 items-center justify-center rounded-xl text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface-muted)] transition-colors`}
                         aria-label="Toggle mobile menu"
                     >
                         {isMobileMenuOpen ? (
@@ -141,10 +143,11 @@ export default function Navbar() {
                                 href={link.href}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 aria-current={active ? "page" : undefined}
-                                className={`flex items-center min-h-[44px] px-3 rounded-xl text-sm font-medium transition-colors ${active
-                                    ? "bg-[var(--ds-surface-muted)] text-[var(--ds-accent)] font-semibold"
-                                    : "text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface-muted)]"
-                                    }`}
+                                className={`flex items-center min-h-[44px] px-3 rounded-xl text-sm font-medium transition-colors ${
+                                    active
+                                        ? "bg-[var(--ds-surface-muted)] text-[var(--ds-accent)] font-semibold"
+                                        : "text-[var(--ds-text-muted)] hover:bg-[var(--ds-surface-muted)]"
+                                }`}
                             >
                                 {link.label}
                             </Link>
