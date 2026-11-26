@@ -118,3 +118,28 @@ model LabPhoto {
   caption   String?
   createdAt DateTime @default(now())
 }
+
+model Product {
+  id               String   @id @default(uuid())
+  name             String
+  category         String
+  shortDescription String
+  longDescription  String?
+  lecturers        String   @default("[]")
+  students         String   @default("[]")
+  techStack        String   @default("[]")
+  features         String   @default("[]")
+  videoUrl         String?
+  demoUrl          String?
+  githubUrl        String?
+  createdAt        DateTime @default(now())
+  screenshots      ProductScreenshot[]
+}
+
+model ProductScreenshot {
+  id        String   @id @default(uuid())
+  url       String
+  createdAt DateTime @default(now())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
