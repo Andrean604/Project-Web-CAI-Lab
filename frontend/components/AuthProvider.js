@@ -1,16 +1,11 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { apiFetch, TOKEN_KEY } from "@/lib/api";
 
 const AuthContext = createContext(null);
 
-const STORAGE_KEY = "lab_auth_role";
-
-// GANTI kredensial ini sesuai kebutuhan.
-// Catatan: karena ini front end saja, kredensial ini terlihat di kode browser
-// sehingga hanya cocok untuk demo/tugas, bukan keamanan sungguhan.
-const ADMIN_USERNAME = "admin";
-const ADMIN_PASSWORD = "admin123";
+const ROLE_KEY = "lab_auth_role";
 
 export function AuthProvider({ children }) {
     const [role, setRole] = useState(null); // null | "user" | "admin"
@@ -18,9 +13,15 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         try {
-            const saved = localStorage.getItem(STORAGE_KEY);
-            if (saved === "admin" || saved === "user") {
-                setRole(saved);
+            const savedRole = localStorage.getItem(ROLE_KEY);
+            const token = localStorage.getItem(TOKEN_KEY);
+            if (savedRole === "admin" && token) {
+                setRole("admin");
+            } else if (savedRole === "user") {
+                setRole("user");
+            } else {
+                localStorage.removeItem(ROLE_KEY);
+                localStorage.removeItem(TOKEN_KEY);
             }
         } catch (e) {
             // ignore storage errors
@@ -28,28 +29,44 @@ export function AuthProvider({ children }) {
         setReady(true);
     }, []);
 
-    const loginAdmin = (username, password) => {
-        if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            setRole("admin");
-            localStorage.setItem(STORAGE_KEY, "admin");
-            return true;
+    // Login ke backend (email + password).
+    // Role ADMIN dari backend -> "admin", selain itu -> "user".
+    const login = async (email, password) => {
+        try {
+            const data = await apiFetch("/api/auth/login", {
+                method: "POST",
+                body: { email, password },
+            });
+            const newRole = data.user?.role === "ADMIN" ? "admin" : "user";
+            localStorage.setItem(TOKEN_KEY, data.token);
+            localStorage.setItem(ROLE_KEY, newRole);
+            setRole(newRole);
+            return { ok: true, role: newRole };
+        } catch (e) {
+            const message =
+                e.status === 400 || e.status === 401
+                    ? "Email atau password salah."
+                    : e.message;
+            return { ok: false, error: message };
         }
-        return false;
     };
 
+    // Masuk sebagai pengunjung (tanpa token, hanya bisa melihat)
     const loginUser = () => {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.setItem(ROLE_KEY, "user");
         setRole("user");
-        localStorage.setItem(STORAGE_KEY, "user");
     };
 
     const logout = () => {
         setRole(null);
-        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(ROLE_KEY);
     };
 
     return (
         <AuthContext.Provider
-            value={{ role, isAdmin: role === "admin", ready, loginAdmin, loginUser, logout }}
+            value={{ role, isAdmin: role === "admin", ready, login, loginUser, logout }}
         >
             {children}
         </AuthContext.Provider>
