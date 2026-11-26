@@ -30,3 +30,5 @@ app.listen(PORT, () => {
 const { uploadDir } = require('./middleware/upload');
 app.use('/uploads', express.static(uploadDir));
 app.use('/api/lab-photos', require('./routes/lab-photos.routes'));
+
+app.use('/api/products', require('./routes/products.routes'));
