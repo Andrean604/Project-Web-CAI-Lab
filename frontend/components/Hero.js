@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { assetUrl } from "@/lib/api";
 
 export default function Hero({ featured }) {
-    const cover = featured?.screenshots?.[0];
+    const cover = featured?.screenshots?.[0]?.url;
 
     return (
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
@@ -43,7 +44,7 @@ export default function Hero({ featured }) {
                             {cover ? (
                                 <div className="aspect-video overflow-hidden rounded-2xl border border-[var(--ds-border)] bg-[var(--ds-surface-muted)]">
                                     <img
-                                        src={cover}
+                                        src={assetUrl(cover)}
                                         alt={`${featured.name} screenshot`}
                                         width={1280}
                                         height={720}
