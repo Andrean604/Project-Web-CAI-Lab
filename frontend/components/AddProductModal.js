@@ -51,18 +51,18 @@ export default function AddProductModal({ isOpen, onClose, onSubmit, initialData
         setForm(
             initialData
                 ? {
-                    name: initialData.name || "",
-                    category: initialData.category || "",
-                    shortDescription: initialData.shortDescription || "",
-                    longDescription: initialData.longDescription || "",
-                    lecturers: toLines(initialData.creators?.lecturers),
-                    students: toLines(initialData.creators?.students),
-                    techStack: toLines(initialData.techStack),
-                    features: toLines(initialData.features),
-                    videoUrl: initialData.videoUrl || "",
-                    demoUrl: initialData.demoUrl || "",
-                    githubUrl: initialData.githubUrl || "",
-                }
+                      name: initialData.name || "",
+                      category: initialData.category || "",
+                      shortDescription: initialData.shortDescription || "",
+                      longDescription: initialData.longDescription || "",
+                      lecturers: toLines(initialData.creators?.lecturers),
+                      students: toLines(initialData.creators?.students),
+                      techStack: toLines(initialData.techStack),
+                      features: toLines(initialData.features),
+                      videoUrl: initialData.videoUrl || "",
+                      demoUrl: initialData.demoUrl || "",
+                      githubUrl: initialData.githubUrl || "",
+                  }
                 : emptyForm
         );
     }, [isOpen, initialData]);
